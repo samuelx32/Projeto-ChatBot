@@ -1,9 +1,29 @@
 from flask import Flask, render_template, url_for, request, redirect
 import sqlite3
+from dotenv import load_dotenv
+import openai
+import os
+
+load_dotenv()
+
+API_CHAT = os.getenv('API_CHAT')
 app = Flask(__name__)
 
 def recebeResposta(mensagem):
-    return "resposta"
+    api_key = API_CHAT
+
+    # Configuração da chave de API
+    openai.api_key = api_key
+
+    # Fazendo uma solicitação para o modelo GPT-3
+    response = openai.Completion.create(
+        engine="davinci-002",
+        prompt=mensagem,
+        max_tokens=5
+    )
+
+
+    return response.choices[0].text.strip()
 
 @app.route("/")
 def index():
