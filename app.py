@@ -3,6 +3,7 @@ import sqlite3
 from dotenv import load_dotenv
 import openai
 import os
+import google.generativeai as genai
 
 load_dotenv()
 
@@ -10,20 +11,11 @@ API_CHAT = os.getenv('API_CHAT')
 app = Flask(__name__)
 
 def recebeResposta(mensagem):
-    api_key = API_CHAT
-
-    # Configuração da chave de API
-    openai.api_key = api_key
-
-    # Fazendo uma solicitação para o modelo GPT-3
-    response = openai.Completion.create(
-        engine="davinci-002",
-        prompt=mensagem,
-        max_tokens=5
-    )
-
-
-    return response.choices[0].text.strip()
+    genai.configure(api_key=API_CHAT)
+    model = genai.GenerativeModel('gemini-pro')
+    response = model.generate_content(mensagem)
+    
+    return response.text
 
 @app.route("/")
 def index():
