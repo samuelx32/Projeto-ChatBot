@@ -12,8 +12,11 @@ app = Flask(__name__)
 
 def recebeResposta(mensagem):
     genai.configure(api_key=API_CHAT)
+    
     model = genai.GenerativeModel('gemini-pro')
-    response = model.generate_content(mensagem)
+    prompt = f"Nome: Julio, Preço do curso de Ciência da computação: 1567 reais; com base nesses dados, responda esse texto a seguir: {mensagem}"
+    chat = model.start_chat(history=[])
+    response = chat.send_message(prompt)
     
     return response.text
 
