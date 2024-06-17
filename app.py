@@ -14,7 +14,11 @@ def recebeResposta(mensagem):
     genai.configure(api_key=API_CHAT)
     
     model = genai.GenerativeModel('gemini-pro')
-    prompt = f"Nome: Julio, Preço do curso de Ciência da computação: 1567 reais; com base nesses dados, responda esse texto a seguir: {mensagem}"
+    prompt = f"""(Nome: Julio), 
+    (Preço do curso de Ciência da computação: 1567 reais),
+    (horário de aula: das 9 da manhâ até às 11 e meia)
+    (Onde eu abro chamado: Sispred); 
+    Você é um chatbot help desk da Universidade católica de brasília, com base nesses dados ou nos disponíveis na internet, responda esse texto a seguir: {mensagem}"""
     chat = model.start_chat(history=[])
     response = chat.send_message(prompt)
     
